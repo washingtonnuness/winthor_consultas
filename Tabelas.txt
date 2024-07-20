@@ -1,0 +1,41 @@
+ --- Lista de tabelas do Winthor e Relacionamentos ---
+
+
+PCCLIENT   --- Tabela de clientes
+
+PCFORNEC   --- Fornecedores
+
+PCPREST    --- Contas a receber
+-> PCPRODUT <> PCDEPTO = CODDEPTO
+
+PCNFSAID   --- Cabeçalho da Nota Fiscal de saídas.
+-> PCPRODUT <> PCDEPTO = CODDEPTO
+
+PCMOV      --- Tabela de movimentação de entrada e saídas - Devoluções de clientes e fornecedores
+-> PCPRODUT <> PCDEPTO = CODDEPTO
+
+PCPRODUT    --- Tabela de produtos
+-> PCPRODUT <> PCDEPTO = CODDEPTO
+
+PCDEPTO      --- Tabela de departamentos
+
+PCSECAO    --- Tabela de Departamentos e Seção - Rotina 571
+-> PCSECAO <> PCPRODUT = CODSEC
+
+PCPEDC --- Cabeçalho de pedidos / tempo e posição
+-> PCPEDC <> PCPEDI = NUMPED 
+
+# 1 PARA N um cabeçalho pode ter vários itens
+
+PCPEDI --- Produtos do pedido
+
+POSICAO = [
+    F - FATURADO
+    M - MONTADO
+    B - BLOQUEADO
+    P - PENDENTE
+]
+
+#PCPEDCFV e PCPEDIFV tabelas depedidos na integradora antes de gravar pedido
+
+
