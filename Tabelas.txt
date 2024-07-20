@@ -38,4 +38,31 @@ POSICAO = [
 
 #PCPEDCFV e PCPEDIFV tabelas depedidos na integradora antes de gravar pedido
 
+PCNFCAN     --- Pedidos cancelados Cabeçalho da PCPEDC
+PCNFCANITEM --- Itens cancelados da PCPEDI
+-> PCNFCAN <> PCNFCANITEM = NUMPED 
+-> PCNFCAN <> PCPEDC = NUMPED 
 
+
+PCPEDIDO    --- Cabeçalho do Pedidos de compra // Relatório de pendencia de entrega comparar Campo Valor total e valor entregue
+
+PCITEM      --- Itens do Pedidos de compra
+-> PCPEDIDO <> PCITEM = NUMPED
+
+PCLANC3     ---  Fluxo de caixa Contas a pagar Previsto Pedidos de compras que não chegou.
+#Rotina 139 - Flux de caixa - coluna conta a pagar previsto.
+#Rotina 220 - Cadastro plano de pagamento de fornecedores 
+#Rotina 226 - contas a pagar previso sobre pedidos de compras. Relatório da PCLANC3
+
+PCEST       --- Estoque de produtos
+PCHISTEST   --- Histório de Estoque
+
+PCGRUPO     --- Grupo de contas
+#Rotina 124 
+<---  ### Conceito
+Todas as conta abaixo da 200 - Fica no cabeçalho da 124  - Contas do grupo 100 CMV
+Contas de receitas entre 200 e 899 - Contas de despesas e receitas
+Todas as conta acima de 900 - Fica no Rodapé da 124
+-->
+PCCONTA     --- Contas de despesas e receitas
+#Rotina 570 
