@@ -4,12 +4,17 @@
 PCCLIENT   --- Tabela de clientes
 
 PCFORNEC   --- Fornecedores
+#Rotina 202
+-> PCFORNEC <> PCPRODUT = CODFORNEC
 
 PCPREST    --- Contas a receber
+#Rotina 111 / Dados faturamento View Faturamento
 -> PCPRODUT <> PCDEPTO = CODDEPTO
+
 
 PCNFSAID   --- Cabeçalho da Nota Fiscal de saídas.
 -> PCPRODUT <> PCDEPTO = CODDEPTO
+-> PCNFSAID <> PCMOV = NUMTRANSVENDA
 
 PCMOV      --- Tabela de movimentação de entrada e saídas - Devoluções de clientes e fornecedores
 -> PCPRODUT <> PCDEPTO = CODDEPTO
@@ -21,17 +26,21 @@ CODOPER = [
 ]
 
 PCPRODUT    --- Tabela de produtos
+#Rotina
 -> PCPRODUT <> PCDEPTO = CODDEPTO
+-> PCPRODUT <> PCFORNEC = CODFORNEC
 
 PCPRODFILIAL    -- Tabela apoio PCPRODUT // Produtos fora de linha, multiplos, etc
-#Rotina 238 - Parametros filial por produto
+#Rotina 238 - Parametros filial por produto // Se campo margem minima estiver preenchido o produto é bloqueado para venda.
+->
 
 PCDEPTO      --- Tabela de departamentos
 
 PCSECAO    --- Tabela de Departamentos e Seção - Rotina 571
 -> PCSECAO <> PCPRODUT = CODSEC
 
-PCPEDC --- Cabeçalho de pedidos / tempo e posição
+PCPEDC --- Cabeçalho de pedidos / tempo e posição | Pedidos da 316,Ecommerce, força de vendas etc.
+#Rotina 316
 -> PCPEDC <> PCPEDI = NUMPED 
 
 # 1 PARA N um cabeçalho pode ter vários itens
@@ -48,12 +57,15 @@ POSICAO = [
 #PCPEDCFV e PCPEDIFV tabelas depedidos na integradora antes de gravar pedido
 
 PCNFCAN     --- Pedidos cancelados Cabeçalho da PCPEDC
+#Rotinas 329 ou 336 //Cancelamento de pedido
+
 PCNFCANITEM --- Itens cancelados da PCPEDI
 -> PCNFCAN <> PCNFCANITEM = NUMPED 
 -> PCNFCAN <> PCPEDC = NUMPED 
 
 
 PCPEDIDO    --- Cabeçalho do Pedidos de compra // Relatório de pendencia de entrega comparar Campo Valor total e valor entregue
+#Rotina 220
 
 PCITEM      --- Itens do Pedidos de compra
 -> PCPEDIDO <> PCITEM = NUMPED
@@ -73,18 +85,32 @@ Todas as conta abaixo da 200 - Fica no cabeçalho da 124  - Contas do grupo 100 
 Contas de receitas entre 200 e 899 - Contas de despesas e receitas
 Todas as conta acima de 900 - Fica no Rodapé da 124
 -->
+
 PCCONTA     --- Contas de despesas, receitas investimentos, etc.
 #Rotina 570 
 
-PCNFENT     --- Entrada de Notas Fiscais  cabeçalho      
+PCNFENT     --- Entrada de Notas Fiscais  cabeçalho
+#Rotina 1301     
 -> PCNFENT <> PCLANC = NUMTRANSENT 
 -> PCNFENT <> PCMOV = NUMTRANSENT # CODEOPER na PCMOV = CODOPER na PCMOV = [ E - ENTRADA }]
 
 PCLANC -- CONTAS A PAGAR Movimentação de entrada
 -> PCLANC <> PCNFENT = NUMTRANSENT
 
+PCLANC3 -- Tabela de conta a pagar pedidos de compra referente pedidos de compra
+#
+->
+ 
 PCCONSUM     --- Tabela parametrização Geral do Winthor
 #Rotina 132 - parametrização do Winthor
 
 PCPARAMFILIAL   --- Tabela Paramentros da filial
 #Rotina 132 - Aba paramentros por filial
+
+PCVERBA -- tABELA lacamentos de verbas
+#1801 ou pedido de bonificação
+
+pcaplicverba --- TUDO DE APLIÇÃO DE VERBAS
+
+PCMOVCRFOR --- VERBAS DE FORNECEDORES
+## Controle de verbas é movimentação de conta corrente agrupar por numero da verba e verifica movimentações somar tipo C e D 
