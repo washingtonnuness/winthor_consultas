@@ -13,9 +13,18 @@ PCNFSAID   --- Cabeçalho da Nota Fiscal de saídas.
 
 PCMOV      --- Tabela de movimentação de entrada e saídas - Devoluções de clientes e fornecedores
 -> PCPRODUT <> PCDEPTO = CODDEPTO
+CODOPER = [
+    E - ENTRADA
+    S - SAIDA
+    ED - ENTRADA DE DEVOLUÇÃO
+    SD - SAIDA DE DEVOLUÇÃO
+]
 
 PCPRODUT    --- Tabela de produtos
 -> PCPRODUT <> PCDEPTO = CODDEPTO
+
+PCPRODFILIAL    -- Tabela apoio PCPRODUT // Produtos fora de linha, multiplos, etc
+#Rotina 238 - Parametros filial por produto
 
 PCDEPTO      --- Tabela de departamentos
 
@@ -64,5 +73,18 @@ Todas as conta abaixo da 200 - Fica no cabeçalho da 124  - Contas do grupo 100 
 Contas de receitas entre 200 e 899 - Contas de despesas e receitas
 Todas as conta acima de 900 - Fica no Rodapé da 124
 -->
-PCCONTA     --- Contas de despesas e receitas
+PCCONTA     --- Contas de despesas, receitas investimentos, etc.
 #Rotina 570 
+
+PCNFENT     --- Entrada de Notas Fiscais  cabeçalho      
+-> PCNFENT <> PCLANC = NUMTRANSENT 
+-> PCNFENT <> PCMOV = NUMTRANSENT # CODEOPER na PCMOV = CODOPER na PCMOV = [ E - ENTRADA }]
+
+PCLANC -- CONTAS A PAGAR Movimentação de entrada
+-> PCLANC <> PCNFENT = NUMTRANSENT
+
+PCCONSUM     --- Tabela parametrização Geral do Winthor
+#Rotina 132 - parametrização do Winthor
+
+PCPARAMFILIAL   --- Tabela Paramentros da filial
+#Rotina 132 - Aba paramentros por filial
