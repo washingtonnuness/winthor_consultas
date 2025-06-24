@@ -1,5 +1,7 @@
  --- Lista de tabelas do Winthor e Relacionamentos ---
+PCEMPR -- Tabela de relação usuário por filiais
 
+PCFILIAL -- Cadastro de Filiais 
 
 PCCLIENT   --- Tabela de clientes
 
